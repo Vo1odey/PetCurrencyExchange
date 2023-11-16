@@ -11,7 +11,7 @@ import java.util.Optional;
 
 
 public class CurrencyRepository {
-    private Currency createCurrency (ResultSet resultSet) throws SQLException {
+    private Currency createCurrency(ResultSet resultSet) throws SQLException {
         try {
             resultSet.next();
             return new Currency(resultSet.getInt("id"),
@@ -27,6 +27,16 @@ public class CurrencyRepository {
         try (Connection connection = ConnectionUtil.open();
              PreparedStatement statement = connection.prepareStatement(QUERY)) {
             statement.setString(1, code);
+            return Optional.ofNullable(createCurrency(statement.executeQuery()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public Optional<Currency> getCurrencyById(int id) throws SQLException {
+        final String QUERY = "SELECT id, code, fullname, sign FROM currencies WHERE id = ?";
+        try (Connection connection = ConnectionUtil.open();
+             PreparedStatement statement = connection.prepareStatement(QUERY)) {
+            statement.setInt(1, id);
             return Optional.ofNullable(createCurrency(statement.executeQuery()));
         } catch (SQLException e) {
             throw new RuntimeException(e);

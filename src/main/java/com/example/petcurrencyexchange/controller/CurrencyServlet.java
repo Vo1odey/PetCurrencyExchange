@@ -35,6 +35,7 @@ public class CurrencyServlet extends HttpServlet {
                 if (currencyRepository.getCurrencyByCode(code).isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Валюта не найдена");
                 } else {
+                    resp.setStatus(HttpServletResponse.SC_OK);
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.writeValue(resp.getWriter(), currencyRepository.getCurrencyByCode(code).get());
                 }

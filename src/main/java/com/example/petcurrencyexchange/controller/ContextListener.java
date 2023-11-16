@@ -1,6 +1,7 @@
 package com.example.petcurrencyexchange.controller;
 
 import com.example.petcurrencyexchange.repositories.CurrencyRepository;
+import com.example.petcurrencyexchange.repositories.ExchangeRatesRepository;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
@@ -14,6 +15,8 @@ public class ContextListener implements ServletContextListener {
         ServletContext context = sce.getServletContext();
         CurrencyRepository currencyRepository = new CurrencyRepository();
         context.setAttribute("currencyRepository", currencyRepository);
+        ExchangeRatesRepository exchangeRatesRepository = new ExchangeRatesRepository();
+        context.setAttribute("exchangeRatesRepository", exchangeRatesRepository);
     }
 
 }
