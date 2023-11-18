@@ -9,10 +9,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Exchange {
+public class DtoExchange {
     private int id;
-    private Currency base;
-    private Currency target;
+    private Currency baseCurrency;
+    private Currency targetCurrency;
     private BigDecimal rate;
     private BigDecimal amount;
     private BigDecimal convertedAmount;
