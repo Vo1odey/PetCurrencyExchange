@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @ToString
 public class DtoExchange {
-    private int id;
     private Currency baseCurrency;
     private Currency targetCurrency;
     private BigDecimal rate;

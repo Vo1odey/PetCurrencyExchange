@@ -14,4 +14,10 @@ public class Calculation {
         BigDecimal priceToOneValue = rate.multiply(new BigDecimal(100));
         return amount.multiply(priceToOneValue).setScale(2, RoundingMode.HALF_DOWN);
     }
+    public static BigDecimal crossConvertedAmount (BigDecimal fromRate, BigDecimal toRate, BigDecimal amount){
+        return fromRate.divide(toRate, 2, RoundingMode.HALF_DOWN).multiply(amount).setScale(2, RoundingMode.HALF_DOWN);
+    }
+    public static BigDecimal crossRate (BigDecimal fromRate, BigDecimal toRate){
+        return fromRate.divide(toRate, 2, RoundingMode.HALF_DOWN);
+    }
 }

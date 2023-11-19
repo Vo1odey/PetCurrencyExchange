@@ -11,4 +11,16 @@ public class Filter {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
     }
+    public static boolean validateCode(String str) {
+        if (str.isEmpty()) {
+            return false;
+        }
+        if (str.length() == 1) {
+            return false;
+        }
+        if (str.length() < 4) {
+            return false;
+        }
+        return true;
+    }
 }
