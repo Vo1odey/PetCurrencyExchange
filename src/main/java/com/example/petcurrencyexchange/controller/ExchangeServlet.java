@@ -1,7 +1,7 @@
 package com.example.petcurrencyexchange.controller;
 
 import com.example.petcurrencyexchange.models.Currency;
-import com.example.petcurrencyexchange.models.DtoExchange;
+import com.example.petcurrencyexchange.Dto.DtoExchange;
 import com.example.petcurrencyexchange.models.ExchangeRates;
 import com.example.petcurrencyexchange.repositories.ExchangeRatesRepository;
 import com.example.petcurrencyexchange.utils.Calculation;
@@ -64,7 +64,7 @@ public class ExchangeServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
-    void createdAndPrintDTO (Currency from, Currency to, BigDecimal rate, BigDecimal amount, BigDecimal convertedAmount,
+    private void createdAndPrintDTO (Currency from, Currency to, BigDecimal rate, BigDecimal amount, BigDecimal convertedAmount,
                              HttpServletResponse resp) throws IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
         DtoExchange dtoExchange = new DtoExchange(from, to, rate, amount, convertedAmount);

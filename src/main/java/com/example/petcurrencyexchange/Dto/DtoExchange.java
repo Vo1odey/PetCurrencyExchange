@@ -1,5 +1,6 @@
-package com.example.petcurrencyexchange.models;
+package com.example.petcurrencyexchange.Dto;
 
+import com.example.petcurrencyexchange.models.Currency;
 import lombok.*;
 
 import java.math.BigDecimal;

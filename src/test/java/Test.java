@@ -1,14 +1,11 @@
-import com.example.petcurrencyexchange.models.DtoExchange;
+import com.example.petcurrencyexchange.Dto.DtoExchange;
 import com.example.petcurrencyexchange.models.ExchangeRates;
-import com.example.petcurrencyexchange.repositories.CurrencyRepository;
 import com.example.petcurrencyexchange.repositories.ExchangeRatesRepository;
 import com.example.petcurrencyexchange.utils.Calculation;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 
 public class Test {
     public static void main(String[] args) throws SQLException {
