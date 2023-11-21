@@ -1,7 +1,7 @@
 package com.example.petcurrencyexchange.repositories;
 
 import com.example.petcurrencyexchange.models.Currency;
-import com.example.petcurrencyexchange.utils.ConnectionUtil;
+import com.example.petcurrencyexchange.service.ConnectionUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

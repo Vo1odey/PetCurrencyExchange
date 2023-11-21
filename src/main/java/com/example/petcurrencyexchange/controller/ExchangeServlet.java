@@ -1,11 +1,11 @@
 package com.example.petcurrencyexchange.controller;
 
 import com.example.petcurrencyexchange.models.Currency;
-import com.example.petcurrencyexchange.Dto.DtoExchange;
+import com.example.petcurrencyexchange.dto.DtoExchange;
 import com.example.petcurrencyexchange.models.ExchangeRates;
 import com.example.petcurrencyexchange.repositories.ExchangeRatesRepository;
-import com.example.petcurrencyexchange.utils.Calculation;
-import com.example.petcurrencyexchange.utils.Filter;
+import com.example.petcurrencyexchange.service.Calculation;
+import com.example.petcurrencyexchange.service.Filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;

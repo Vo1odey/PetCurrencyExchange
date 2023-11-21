@@ -1,7 +1,7 @@
-import com.example.petcurrencyexchange.Dto.DtoExchange;
+import com.example.petcurrencyexchange.dto.DtoExchange;
 import com.example.petcurrencyexchange.models.ExchangeRates;
 import com.example.petcurrencyexchange.repositories.ExchangeRatesRepository;
-import com.example.petcurrencyexchange.utils.Calculation;
+import com.example.petcurrencyexchange.service.Calculation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;

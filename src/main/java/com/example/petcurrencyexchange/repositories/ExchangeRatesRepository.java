@@ -2,7 +2,7 @@ package com.example.petcurrencyexchange.repositories;
 
 import com.example.petcurrencyexchange.models.Currency;
 import com.example.petcurrencyexchange.models.ExchangeRates;
-import com.example.petcurrencyexchange.utils.ConnectionUtil;
+import com.example.petcurrencyexchange.service.ConnectionUtil;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -53,6 +53,23 @@ public class ExchangeRatesRepository {
             statement.setInt(2, base);
             statement.setInt(3, target);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void addExchangeRates(String base, String target, BigDecimal rate) {
+        final String QUERY = "INSERT INTO exchangerates (basecurrencyid, targetcurrencyid, rate) VALUES (?,?,?)";
+        try (Connection connection = ConnectionUtil.open();
+        PreparedStatement statement = connection.prepareStatement(QUERY)) {
+            if (currencyRepository.getCurrencyByCode(base).isPresent() &&
+            currencyRepository.getCurrencyByCode(target).isPresent()) {
+                int baseId = currencyRepository.getCurrencyByCode(base).get().getId();
+                int targetId = currencyRepository.getCurrencyByCode(target).get().getId();
+                statement.setInt(1, baseId);
+                statement.setInt(2, targetId);
+                statement.setBigDecimal(3, rate);
+                statement.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -1,4 +1,4 @@
-package com.example.petcurrencyexchange.utils;
+package com.example.petcurrencyexchange.service;
 
 import java.io.IOException;
 import java.io.InputStream;

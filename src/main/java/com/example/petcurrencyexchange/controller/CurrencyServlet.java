@@ -1,7 +1,7 @@
 package com.example.petcurrencyexchange.controller;
 
 import com.example.petcurrencyexchange.repositories.CurrencyRepository;
-import com.example.petcurrencyexchange.utils.Filter;
+import com.example.petcurrencyexchange.service.Filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;

@@ -1,4 +1,4 @@
-package com.example.petcurrencyexchange.utils;
+package com.example.petcurrencyexchange.service;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

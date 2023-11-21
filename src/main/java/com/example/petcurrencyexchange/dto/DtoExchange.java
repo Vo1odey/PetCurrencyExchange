@@ -1,4 +1,4 @@
-package com.example.petcurrencyexchange.Dto;
+package com.example.petcurrencyexchange.dto;
 
 import com.example.petcurrencyexchange.models.Currency;
 import lombok.*;

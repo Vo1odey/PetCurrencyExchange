@@ -1,8 +1,9 @@
 package com.example.petcurrencyexchange.controller;
 
 import com.example.petcurrencyexchange.models.ExchangeRates;
+import com.example.petcurrencyexchange.repositories.CurrencyRepository;
 import com.example.petcurrencyexchange.repositories.ExchangeRatesRepository;
-import com.example.petcurrencyexchange.utils.Filter;
+import com.example.petcurrencyexchange.service.Filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -19,6 +20,7 @@ import java.sql.SQLException;
 @WebServlet(name = "ExchangeServlet", value = "/exchangeRate/*")
 public class ExchangeRateServlet extends HttpServlet {
     private ExchangeRatesRepository exchangeRatesRepository;
+    private CurrencyRepository currencyRepository;
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,6 +34,7 @@ public class ExchangeRateServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) {
         exchangeRatesRepository = (ExchangeRatesRepository) config.getServletContext().getAttribute("exchangeRatesRepository");
+        currencyRepository = (CurrencyRepository) config.getServletContext().getAttribute("currencyRepository");
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -52,6 +55,34 @@ public class ExchangeRateServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (req.getParameter("basecurrencycode").length() < 3 ||
+                req.getParameter("targetcurrencycode").length() < 3) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Отсутствует нужное поле формы");
+            return;
+        }
+        String base = req.getParameter("basecurrencycode").toUpperCase();
+        String target = req.getParameter("targetcurrencycode").toUpperCase();
+        //Validate rate?
+        BigDecimal rate = BigDecimal.valueOf(Double.parseDouble(req.getParameter("rate"))).setScale(2, RoundingMode.HALF_DOWN);
+        try {
+            if (exchangeRatesRepository.getExchangeRatesByCodes(base, target).isEmpty()) {
+                if (currencyRepository.getCurrencyByCode(base).isPresent() &&
+                currencyRepository.getCurrencyByCode(target).isPresent()) {
+                    resp.setStatus(HttpServletResponse.SC_OK);
+                    Filter.setContentTypeAndCharacterEncoding(req, resp);
+                    exchangeRatesRepository.addExchangeRates(base, target, rate);
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.writeValue(resp.getWriter(), exchangeRatesRepository.getExchangeRatesByCodes(base, target).get());
+                } else resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Введенная валюта не найдена");
+            } else resp.sendError(HttpServletResponse.SC_CONFLICT, "Валютная пара с таким кодом уже существует");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     protected void doPatch(HttpServletRequest req, HttpServletResponse res) throws IOException {
         Filter.setContentTypeAndCharacterEncoding(req, res);
         if (req.getPathInfo().length() < 7) {
