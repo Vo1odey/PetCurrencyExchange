@@ -5,12 +5,13 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class DtoExchange {
+public class Exchange {
     private Currency baseCurrency;
     private Currency targetCurrency;
     private BigDecimal rate;

@@ -1,7 +1,7 @@
 package com.example.petcurrencyexchange.controller;
 
+import com.example.petcurrencyexchange.dto.Exchange;
 import com.example.petcurrencyexchange.models.Currency;
-import com.example.petcurrencyexchange.dto.DtoExchange;
 import com.example.petcurrencyexchange.models.ExchangeRates;
 import com.example.petcurrencyexchange.repositories.ExchangeRatesRepository;
 import com.example.petcurrencyexchange.service.Calculation;
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 
-@WebServlet(value = "/exchange/*")
+@WebServlet(name = "Exchanger", value = "/exchange/*")
 public class ExchangeServlet extends HttpServlet {
     private ExchangeRatesRepository exchangeRatesRepository;
     @Override
@@ -69,8 +69,8 @@ public class ExchangeServlet extends HttpServlet {
                              HttpServletResponse resp) throws IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
         //Exception 500?
-        DtoExchange dtoExchange = new DtoExchange(from, to, rate, amount, convertedAmount);
+        Exchange exchange = new Exchange(from, to, rate, amount, convertedAmount);
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.writeValue(resp.getWriter(), dtoExchange);
+        objectMapper.writeValue(resp.getWriter(), exchange);
     }
 }

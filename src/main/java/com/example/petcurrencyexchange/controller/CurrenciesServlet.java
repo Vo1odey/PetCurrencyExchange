@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
+
 @WebServlet(name = "CurrenciesServlet", value = "/currencies/*")
 public class CurrenciesServlet extends HttpServlet {
     private CurrencyRepository currencyRepository;
@@ -19,6 +20,14 @@ public class CurrenciesServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         currencyRepository = (CurrencyRepository) config.getServletContext().getAttribute("currencyRepository");
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Filter.setContentTypeAndCharacterEncoding(req, resp);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(resp.getWriter(), currencyRepository.getCurrencies());
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Filter.setContentTypeAndCharacterEncoding(req, resp);

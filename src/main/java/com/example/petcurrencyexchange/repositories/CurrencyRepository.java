@@ -3,10 +3,9 @@ package com.example.petcurrencyexchange.repositories;
 import com.example.petcurrencyexchange.models.Currency;
 import com.example.petcurrencyexchange.service.ConnectionUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -53,6 +52,21 @@ public class CurrencyRepository {
             statement.setString(2, code);
             statement.setString(3, sign);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Currency> getCurrencies() {
+        List<Currency> currencies = new ArrayList<>();
+        final String QUERY = "SELECT id, code, fullname, sign FROM currencies";
+        try (Connection connection = ConnectionUtil.open();
+             PreparedStatement statement = connection.prepareStatement(QUERY)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (!resultSet.isLast()) {
+                currencies.add(createCurrency(resultSet));
+            }
+            return currencies;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
