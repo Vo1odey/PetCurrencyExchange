@@ -32,6 +32,10 @@ public class ExchangeServlet extends HttpServlet {
         Filter.setContentTypeAndCharacterEncoding(req, resp);
         String from = req.getParameter("from").toUpperCase();
         String to = req.getParameter("to").toUpperCase();
+        if (!Filter.isValidDecimal(req.getParameter("amount"))){
+            resp.sendError(HttpServletResponse.SC_CONFLICT, "Переданный параметр не является числом");
+            return;
+        }
         BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(req.getParameter("amount"))).setScale
                 (2, RoundingMode.HALF_DOWN);
         try {

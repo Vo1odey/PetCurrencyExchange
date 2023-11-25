@@ -58,6 +58,7 @@ public class ExchangeRateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Filter.setContentTypeAndCharacterEncoding(req, resp);
         if (req.getParameter("basecurrencycode").length() < 3 ||
                 req.getParameter("targetcurrencycode").length() < 3) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Отсутствует нужное поле формы");
@@ -65,14 +66,16 @@ public class ExchangeRateServlet extends HttpServlet {
         }
         String base = req.getParameter("basecurrencycode").toUpperCase();
         String target = req.getParameter("targetcurrencycode").toUpperCase();
-        //Validate rate?
+        if (!Filter.isValidDecimal(req.getParameter("rate"))) {
+            resp.sendError(HttpServletResponse.SC_CONFLICT, "Переданный параметр не является числом");
+            return;
+        }
         BigDecimal rate = BigDecimal.valueOf(Double.parseDouble(req.getParameter("rate"))).setScale(2, RoundingMode.HALF_DOWN);
         try {
             if (exchangeRatesRepository.getExchangeRatesByCodes(base, target).isEmpty()) {
                 if (currencyRepository.getCurrencyByCode(base).isPresent() &&
                 currencyRepository.getCurrencyByCode(target).isPresent()) {
                     resp.setStatus(HttpServletResponse.SC_OK);
-                    Filter.setContentTypeAndCharacterEncoding(req, resp);
                     exchangeRatesRepository.addExchangeRates(base, target, rate);
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.writeValue(resp.getWriter(), exchangeRatesRepository.getExchangeRatesByCodes(base, target).get());
@@ -91,6 +94,9 @@ public class ExchangeRateServlet extends HttpServlet {
         }
         String baseCode = req.getPathInfo().substring(1,4).toUpperCase();
         String targetCode = req.getPathInfo().substring(4,7).toUpperCase();
+        if (!Filter.isValidDecimal(req.getParameter("rate"))){
+            res.sendError(HttpServletResponse.SC_CONFLICT, "Переданный параметр не является числом");
+        }
         BigDecimal rate = BigDecimal.valueOf(Double.parseDouble(req.getParameter("rate"))).setScale
                 (2, RoundingMode.HALF_DOWN);
         try {
