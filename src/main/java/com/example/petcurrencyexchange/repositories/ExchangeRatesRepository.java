@@ -9,11 +9,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ExchangeRatesRepository {
     private final CurrencyRepository currencyRepository = new CurrencyRepository();
-    private ExchangeRates CreateExchangeRatesById(ResultSet resultSet) throws SQLException {
+    private ExchangeRates createExchangeRatesById(ResultSet resultSet) throws SQLException {
         try {
             resultSet.next();
             Currency baseCurrency = null;
@@ -40,7 +42,7 @@ public class ExchangeRatesRepository {
              PreparedStatement statement = connection.prepareStatement(QUERY)) {
             statement.setString(1, base);
             statement.setString(2, target);
-            return Optional.ofNullable(CreateExchangeRatesById(statement.executeQuery()));
+            return Optional.ofNullable(createExchangeRatesById(statement.executeQuery()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -70,6 +72,20 @@ public class ExchangeRatesRepository {
                 statement.setBigDecimal(3, rate);
                 statement.executeUpdate();
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public List<ExchangeRates> getExchangeRates() {
+        List<ExchangeRates> exchangeRates = new ArrayList<>();
+        final String QUERY = "SELECT id, basecurrencyid, targetcurrencyid, rate FROM exchangerates";
+        try (Connection connection = ConnectionUtil.open();
+             PreparedStatement statement = connection.prepareStatement(QUERY)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (!resultSet.isLast()) {
+                exchangeRates.add(createExchangeRatesById(resultSet));
+            }
+            return exchangeRates;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

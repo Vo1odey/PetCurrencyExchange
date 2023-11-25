@@ -13,8 +13,8 @@ import java.sql.SQLException;
 
 public class Test {
     public static void main(String[] args) throws SQLException, IOException {
-        CurrencyRepository currencyRepository = new CurrencyRepository();
-        System.out.println(currencyRepository.getCurrencies());
+        ExchangeRatesRepository exchangeRatesRepository = new ExchangeRatesRepository();
+        System.out.println(exchangeRatesRepository.getExchangeRates());
     }
 
 

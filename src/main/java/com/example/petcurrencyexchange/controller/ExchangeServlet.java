@@ -38,7 +38,6 @@ public class ExchangeServlet extends HttpServlet {
             if (exchangeRatesRepository.getExchangeRatesByCodes(from, to).isPresent()) {
                 ExchangeRates exchangeRatesModel = exchangeRatesRepository.getExchangeRatesByCodes(from, to).get();
                 BigDecimal convertedAmount = Calculation.convertedAmount(amount, exchangeRatesModel.getRate());
-                //Exception?
                 createdAndPrintDTO(exchangeRatesModel.getBaseCurrency(), exchangeRatesModel.getTargetCurrency(),
                         exchangeRatesModel.getRate(), amount, convertedAmount, resp);
             }
@@ -68,7 +67,6 @@ public class ExchangeServlet extends HttpServlet {
     private void createdAndPrintDTO (Currency from, Currency to, BigDecimal rate, BigDecimal amount, BigDecimal convertedAmount,
                              HttpServletResponse resp) throws IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
-        //Exception 500?
         Exchange exchange = new Exchange(from, to, rate, amount, convertedAmount);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(resp.getWriter(), exchange);
